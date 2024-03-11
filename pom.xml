@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.raffaelqueiroga</groupId>
+	<artifactId>WordsFrequency</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>WordsFrequency</name>
+	<description>The program receives the file path from the user, analyzes the
+		frequency of the contained words, displays them along with their
+		respective translations and frequencies, and saves this information in a
+		new file</description>
+
+	<dependencies>
+		<!--
+		https://mvnrepository.com/artifact/com.google.cloud/google-cloud-translate -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-translate</artifactId>
+			<version>1.94.3</version>
+		</dependency>
+
+
+	</dependencies>
+
+</project>
