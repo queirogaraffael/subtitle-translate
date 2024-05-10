@@ -1,14 +1,15 @@
 package controller;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import Services.MainProgramService;
 import entities.Word;
+import util.ManipulaArquivo;
+import views.SinalEsperaDeTraducaoView;
+import views.TraducaoFinalizadaView;
 
 public class MainProgramController {
 
@@ -17,35 +18,49 @@ public class MainProgramController {
 	}
 
 	public void MainProgram() {
-		
-//pode estar demorando pq ele nao sabe qual o idioma logo
-// classe que manipula a adicao de palavras
-// dizer qual o idioma da legenda e perguntar para qual ele quer traduzir
-// melhoria nos nomes do view
-// LOADING
-// melhorar a rapidez do programa
-// o mainprogram faz de acordo com o idioma escolhido e chama os metodos
-		
-		String path = JOptionPane.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
-		List<Word> words = new ArrayList<Word>();
+		while (true) {
 
-		MainProgramService.processarConteudoDoArquivo(words, path);
-		
-		File path1 = new File(path);
-		String pathToSave = path1.getParent();
-		String nomeArquivo = path1.getName();
+			String caminhoArquivoLegendaString = JOptionPane
+					.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
-		String nomeArquivoFormatado = nomeArquivo.substring(0, 1).toUpperCase() + nomeArquivo.substring(1);
+			
+			System.out.println(ManipulaArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString));
+			System.out.println(ManipulaArquivo.verificarDiretorio(caminhoArquivoLegendaString));
+			if (ManipulaArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
+					&& ManipulaArquivo.verificarDiretorio(caminhoArquivoLegendaString)) {
+				List<Word> words = new ArrayList<Word>();
 
-		Collections.sort(words);
-		// e se der erro ? vai chegar aqui e vai salvar ? 
-		
-		MainProgramService.saveFile(pathToSave, nomeArquivoFormatado, words);
-		JOptionPane.showMessageDialog(null, "Traducao da legenda finalizada!\nDiretorio: " + pathToSave + "\n"
-				+ "Nome do arquivo: FrequenciaDePalavras" + nomeArquivoFormatado);
+				SinalEsperaDeTraducaoView.view();
 
-		System.exit(0);
+				MainProgramService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString);
+
+				String nomeArquivoFormatado = MainProgramService
+						.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
+
+				String caminhoParaSalvarArquivoTraduzido = MainProgramService
+						.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
+
+				MainProgramService.organizaPalavrasPelaInterfaceComparable(words);
+
+				MainProgramService.saveFile(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
+
+				TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
+
+				System.exit(0);
+
+			} else {
+				Object[] opcoes = { "Sim", "Nao" };
+				int opcao = JOptionPane.showOptionDialog(null, "Deseja tentar outro arquivo ?", "Erro",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcoes, opcoes[0]);
+// constantes
+				if (opcao == 1) {
+					System.exit(0);
+				}
+
+			}
+
+		}
 
 	}
 }

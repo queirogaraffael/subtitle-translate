@@ -5,12 +5,11 @@ import com.google.cloud.translate.Translation;
 
 public class Translator {
 
-	public static String translateText(String text, String targetLanguage) {
+	public static String translateText(String text, String sourceLanguage, String targetLanguage) {
 		Translate translate = GoogleTranslateConnection.GoogleTranslateService();
-		
-		// verificar se ele ja sabe o idioma do texto 
 
-		Translation translation = translate.translate(text, Translate.TranslateOption.targetLanguage(targetLanguage));
+		Translation translation = translate.translate(text, Translate.TranslateOption.sourceLanguage(sourceLanguage),
+				Translate.TranslateOption.targetLanguage(targetLanguage));
 		return translation.getTranslatedText();
 	}
 
