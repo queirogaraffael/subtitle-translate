@@ -1,17 +1,12 @@
 package controller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import GoogleTranslateAPI.Translator;
 import Services.MainProgramService;
 import entities.Word;
 
@@ -22,66 +17,35 @@ public class MainProgramController {
 	}
 
 	public void MainProgram() {
-
-		String path = JOptionPane.showInputDialog("Caminho do arquivo: ");
-
-		File path1 = new File(path);
+		
+//pode estar demorando pq ele nao sabe qual o idioma logo
+// classe que manipula a adicao de palavras
+// dizer qual o idioma da legenda e perguntar para qual ele quer traduzir
+// melhoria nos nomes do view
+// LOADING
+// melhorar a rapidez do programa
+// o mainprogram faz de acordo com o idioma escolhido e chama os metodos
+		
+		String path = JOptionPane.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
 		List<Word> words = new ArrayList<Word>();
 
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		MainProgramService.processarConteudoDoArquivo(words, path);
+		
+		File path1 = new File(path);
+		String pathToSave = path1.getParent();
+		String nomeArquivo = path1.getName();
 
-			String linhaDoArquivo = br.readLine();
+		String nomeArquivoFormatado = nomeArquivo.substring(0, 1).toUpperCase() + nomeArquivo.substring(1);
 
-			while (linhaDoArquivo != null) {
+		Collections.sort(words);
+		// e se der erro ? vai chegar aqui e vai salvar ? 
+		
+		MainProgramService.saveFile(pathToSave, nomeArquivoFormatado, words);
+		JOptionPane.showMessageDialog(null, "Traducao da legenda finalizada!\nDiretorio: " + pathToSave + "\n"
+				+ "Nome do arquivo: FrequenciaDePalavras" + nomeArquivoFormatado);
 
-				if (!MainProgramService.isANumber(linhaDoArquivo) && !linhaDoArquivo.contains(" --> ")
-						&& !linhaDoArquivo.isEmpty()) {
-
-					List<String> linha = new ArrayList<String>(Arrays.asList(linhaDoArquivo.split(" ")));
-
-					for (int i = 0; i < linha.size(); i++) {
-
-						String filteredWord = MainProgramService.filter(linha.get(i)).toLowerCase();
-
-						if (!filteredWord.equals("") && !filteredWord.equals(" ")) {
-							Word palavra = new Word(filteredWord);
-
-							if (words.contains(palavra)) {
-								int index = words.indexOf(palavra);
-								words.get(index).adicionaFrequencia();
-
-							} else {
-
-								String translatedWord = Translator.translateText(filteredWord, "pt");
-								palavra.setWordTranslated(translatedWord);
-								words.add(palavra);
-
-							}
-						}
-
-					}
-
-				}
-				linhaDoArquivo = br.readLine();
-			}
-		} catch (IOException e) {
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			String pathToSave = path1.getParent();
-
-			String nomeArquivo = path1.getName();
-
-			String nomeArquivoFormatado = nomeArquivo.substring(0, 1).toUpperCase() + nomeArquivo.substring(1);
-
-			Collections.sort(words);
-			MainProgramService.saveFile(pathToSave, nomeArquivoFormatado, words);
-			JOptionPane.showMessageDialog(null, "Traducao da legenda finalizada!\nDiretorio: " + pathToSave + "\n"
-					+ "Nome do arquivo: FrequenciaDePalavras" + nomeArquivoFormatado);
-
-			System.exit(0);
-
-		}
+		System.exit(0);
 
 	}
 }

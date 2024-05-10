@@ -4,7 +4,7 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 
 public class GoogleTranslateConnection {
-	private static String apiKey = "Key";
+	private static String apiKey = "";
 	private static Translate translate;
 
 	@SuppressWarnings("deprecation")
