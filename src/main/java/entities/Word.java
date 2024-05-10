@@ -3,54 +3,49 @@ package entities;
 import java.util.Objects;
 
 public class Word implements Comparable<Word> {
-	private String name;
-	private String nameTranslated;
+	private String word;
+	private String wordTranslated;
 	private Integer frequency = 1;
 
 	public Word() {
 	}
 
-	public Word(String name) {
-		this.name = name;
+	public Word(String word) {
+		super();
+		this.word = word;
 	}
 
-	public String getName() {
-		return name;
+	public String getWord() {
+		return word;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-
+	public void setWord(String word) {
+		this.word = word;
 	}
 
-	public String getNameTranslated() {
-		return nameTranslated;
+	public String getWordTranslated() {
+		return wordTranslated;
 	}
 
-	public void setNameTranslated(String nameTranslated) {
-		this.nameTranslated = nameTranslated;
+	public void setWordTranslated(String wordTranslated) {
+		this.wordTranslated = wordTranslated;
 	}
 
-	public int getFrequency() {
+	public Integer getFrequency() {
 		return frequency;
-	}
-
-	public void setFrequency(int frequency) {
-		this.frequency += frequency;
 	}
 
 	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
 
-	@Override
-	public String toString() {
-		return name + " - " + nameTranslated + " - " + String.format("%d", frequency);
+	public void adicionaFrequencia() {
+		frequency += 1;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name);
+		return Objects.hash(word);
 	}
 
 	@Override
@@ -62,7 +57,7 @@ public class Word implements Comparable<Word> {
 		if (getClass() != obj.getClass())
 			return false;
 		Word other = (Word) obj;
-		return Objects.equals(name, other.name);
+		return Objects.equals(word, other.word);
 	}
 
 	@Override
@@ -70,4 +65,8 @@ public class Word implements Comparable<Word> {
 		return -frequency.compareTo(o.getFrequency());
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%d : ", frequency) +  word + " - " + wordTranslated;
+	}
 }
