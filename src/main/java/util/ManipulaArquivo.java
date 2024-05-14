@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import constantes.ConstantesGeral;
 import entities.Word;
 
 public class ManipulaArquivo {
@@ -22,7 +23,7 @@ public class ManipulaArquivo {
 		}
 
 		try {
-			File testeArquivo = new File(diretorio, "teste.txt");
+			File testeArquivo = new File(diretorio, "teste.srt");
 			if (!testeArquivo.createNewFile()) {
 				return false;
 			} else {
@@ -45,17 +46,16 @@ public class ManipulaArquivo {
 			return false;
 		}
 	}
-	
-	public static void saveFile(String caminhoArquivo, String nomeArquivo, List<Word> palavras) {
+
+	public static void salvaArquivoTraducaoFrequencia(String caminhoArquivo, String nomeArquivo, List<Word> palavras) {
 
 		File diretorio = new File(caminhoArquivo);
 
 		if (!diretorio.exists()) {
 			diretorio.mkdirs();
 		}
-// melhorar isso aqui - integrar mais ao view la
-		// criar uma constante para esse nome
-		File arquivo = new File(diretorio, "FrequenciaDePalavras" + nomeArquivo);
+
+		File arquivo = new File(diretorio, ConstantesGeral.nomeArquivoFinal + nomeArquivo);
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
 			for (Word line : palavras) {

@@ -28,25 +28,24 @@ public class SubtitleTranslateService {
 
 	}
 
-// melhorar a fluidez aqui, 
-// separar responsabilidades 
-	public static void processarConteudoDoArquivo(List<Word> words, String path, String idiomaOriginal,
+	public static void processarConteudoDoArquivo(List<Word> words, String caminhoArquivoLegenda,
 			String idiomaTraduzir) {
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivoLegenda))) {
 
 			String linhaDoArquivo = br.readLine();
 
 			while (linhaDoArquivo != null) {
-// utiliza expressao lambda para isso aqui
+
 				if (!linhaDoArquivo.contains(" --> ") && !linhaDoArquivo.isEmpty()) {
 
 					String[] linha = linhaDoArquivo.split(" ");
 
 					for (int i = 0; i < linha.length; i++) {
-						String filteredWord = SubtitleTranslateService.filter(linha[i].toLowerCase());
-						encontraOuCriaPalavra(filteredWord, words, idiomaOriginal, idiomaTraduzir);
+						String palavraFiltrada = SubtitleTranslateService.filter(linha[i].toLowerCase());
+						encontraOuCriaPalavra(palavraFiltrada, words, idiomaTraduzir);
 					}
 				}
+
 				linhaDoArquivo = br.readLine();
 			}
 		} catch (IOException erro) {
@@ -54,17 +53,15 @@ public class SubtitleTranslateService {
 		}
 	}
 
-// melhorar mais - separar a classe de tradução
-	private static void encontraOuCriaPalavra(String filteredWord, List<Word> words, String idiomaOriginal,
-			String idiomaTraduzir) {
-		if (!filteredWord.equals("") && !filteredWord.equals(" ")) {
-			Word palavra = new Word(filteredWord);
+	private static void encontraOuCriaPalavra(String palavraFiltrada, List<Word> words, String idiomaTraduzir) {
+		if (!palavraFiltrada.equals("") && !palavraFiltrada.equals(" ")) {
+			Word palavra = new Word(palavraFiltrada);
 
 			if (words.contains(palavra)) {
 				int index = words.indexOf(palavra);
 				words.get(index).adicionaFrequencia();
 			} else {
-				String translatedWord = Translator.tradutorPalavra(filteredWord, idiomaOriginal, idiomaTraduzir);
+				String translatedWord = Translator.tradutorPalavra(palavraFiltrada, idiomaTraduzir);
 				palavra.setWordTranslated(translatedWord);
 				words.add(palavra);
 			}
@@ -85,7 +82,6 @@ public class SubtitleTranslateService {
 		return caminhoArquivoLegenda.getParent();
 	}
 
-// tentar implementar por ca
 	public static void organizaPalavrasPelaInterfaceComparable(List<Word> words) {
 		Collections.sort(words);
 

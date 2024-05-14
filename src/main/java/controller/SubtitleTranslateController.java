@@ -7,11 +7,11 @@ import javax.swing.JOptionPane;
 
 import GoogleTranslateAPI.GoogleTranslateConnection;
 import Services.SubtitleTranslateService;
-import constantes.ConstanteSeQuerContinuarOuNao;
+import constantes.ConstantesOpcoes;
 import entities.Word;
 import util.ManipulaArquivo;
-import views.IdiomasViews;
-import views.SeCaminhoArquivoFalharView;
+import views.FalhaArquivoView;
+import views.IdiomasView;
 import views.SinalDeEsperaTraducaoView;
 import views.TraducaoFinalizadaView;
 
@@ -21,10 +21,9 @@ public class SubtitleTranslateController {
 
 	}
 
-	// analisar a opcao de identificar o idioma automaticamente
 	public void MainProgram() {
 
-		String idiomaOriginal = IdiomasViews.idiomaOriginal();
+		List<Word> words = new ArrayList<Word>();
 
 		String caminhoArquivoLegendaString = JOptionPane.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
@@ -32,9 +31,9 @@ public class SubtitleTranslateController {
 
 			if (!ManipulaArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
 					|| !ManipulaArquivo.verificarDiretorio(caminhoArquivoLegendaString)) {
-				int opcao = SeCaminhoArquivoFalharView.view();
+				int opcao = FalhaArquivoView.view();
 
-				if (opcao == ConstanteSeQuerContinuarOuNao.SIM) {
+				if (opcao == ConstantesOpcoes.SIM) {
 					caminhoArquivoLegendaString = JOptionPane
 							.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
@@ -49,29 +48,19 @@ public class SubtitleTranslateController {
 
 		}
 
-		String idiomaTraduzir = IdiomasViews.idiomaParaTraduzir();
-
-		programa(caminhoArquivoLegendaString, idiomaOriginal, idiomaTraduzir);
-
-	}
-
-	private static void programa(String caminhoArquivoLegendaString, String idiomaOriginal, String idiomaTraduzir) {
-
-		List<Word> words = new ArrayList<Word>();
+		String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
 
 		SinalDeEsperaTraducaoView.view();
 
-		SubtitleTranslateService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString, idiomaOriginal,
-				idiomaTraduzir);
-
-		String nomeArquivoFormatado = SubtitleTranslateService.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
-
-		String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
-				.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
+		SubtitleTranslateService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString, idiomaTraduzir);
 
 		SubtitleTranslateService.organizaPalavrasPelaInterfaceComparable(words);
 
-		ManipulaArquivo.saveFile(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
+		String nomeArquivoFormatado = SubtitleTranslateService.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
+		String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
+				.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
+
+		ManipulaArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
 
 		TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
 
@@ -79,4 +68,5 @@ public class SubtitleTranslateController {
 		System.exit(0);
 
 	}
+
 }

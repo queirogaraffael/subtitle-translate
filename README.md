@@ -1,6 +1,6 @@
 # Tradutor de Legendas
 
-Este é um tradutor de legendas que permite a tradução de palavras em legendas de vídeo (.srt). O projeto utiliza a API do Google Translate para realizar as traduções do inglês para o português.
+Este é um tradutor de legendas que permite a tradução de palavras em arquivos de legendas de vídeo (.srt). O projeto utiliza a API do Google Translate para realizar as traduções de um idioma qualquer(que tenha suporte no google tradutor) e permite traduzir para o inglês, portugues ou alemão.
 
 * Focado em leitura de arquivos de legendas no formato .srt.
 * Filtragem de palavras válidas.
@@ -24,7 +24,8 @@ Como usar
 * Clone este repositório para o seu ambiente local.
 * Configure sua chave de API do Google Translate na classe GoogleTranslateConnection.
 * Execute o programa principal.
-* Selecione o arquivo de legenda que deseja traduzir.
+* Selecione o arquivo de legenda que deseja traduzir. O programa identificara automaticamente o idioma do arquivo.
+* Selecione para qual idioma deseja traduzir. 
 * Aguarde enquanto o programa processa e traduz as legendas.
 * O novo arquivo de legenda traduzido será gerado na mesma pasta do arquivo original.
 

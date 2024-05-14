@@ -2,7 +2,7 @@ package views;
 
 import javax.swing.JOptionPane;
 
-public class SeCaminhoArquivoFalharView {
+public class FalhaArquivoView {
 	public static int view() {
 		Object[] opcoes = { "Sim", "Nao" };
 		int opcao = JOptionPane.showOptionDialog(null, "Deseja tentar outro arquivo ?", "Erro",
