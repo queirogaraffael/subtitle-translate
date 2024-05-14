@@ -1,7 +1,7 @@
 package application;
 
 import GoogleTranslateAPI.GoogleTranslateConnection;
-import controller.MainProgramController;
+import controller.SubtitleTranslateController;
 
 public class Main {
 
@@ -9,7 +9,7 @@ public class Main {
 		
 		GoogleTranslateConnection.inicializaGoogleTranslateConnection();
 
-		MainProgramController controller = new MainProgramController();
+		SubtitleTranslateController controller = new SubtitleTranslateController();
 
 		controller.MainProgram();
 

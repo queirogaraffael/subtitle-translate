@@ -1,10 +1,8 @@
 package Services;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -16,27 +14,7 @@ import javax.swing.JOptionPane;
 import GoogleTranslateAPI.Translator;
 import entities.Word;
 
-public class MainProgramService {
-
-	public static void saveFile(String caminhoArquivo, String nomeArquivo, List<Word> palavras) {
-
-		File diretorio = new File(caminhoArquivo);
-
-		if (!diretorio.exists()) {
-			diretorio.mkdirs();
-		}
-
-		File arquivo = new File(diretorio, "FrequenciaDePalavras" + nomeArquivo);
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
-			for (Word line : palavras) {
-				bw.write(line.toString());
-				bw.newLine();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+public class SubtitleTranslateService {
 
 	public static String filter(String phrase) {
 		String charactersNotIncluded = "[\"!@ $%¨&*()_+=´`{}\\[\\]^~,.<>:;1234567890\\\\/?-]";
@@ -52,7 +30,8 @@ public class MainProgramService {
 
 // melhorar a fluidez aqui, 
 // separar responsabilidades 
-	public static void processarConteudoDoArquivo(List<Word> words, String path) {
+	public static void processarConteudoDoArquivo(List<Word> words, String path, String idiomaOriginal,
+			String idiomaTraduzir) {
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
 			String linhaDoArquivo = br.readLine();
@@ -64,8 +43,8 @@ public class MainProgramService {
 					String[] linha = linhaDoArquivo.split(" ");
 
 					for (int i = 0; i < linha.length; i++) {
-						String filteredWord = MainProgramService.filter(linha[i].toLowerCase());
-						encontraOuCriaPalavra(filteredWord, words);
+						String filteredWord = SubtitleTranslateService.filter(linha[i].toLowerCase());
+						encontraOuCriaPalavra(filteredWord, words, idiomaOriginal, idiomaTraduzir);
 					}
 				}
 				linhaDoArquivo = br.readLine();
@@ -76,7 +55,8 @@ public class MainProgramService {
 	}
 
 // melhorar mais - separar a classe de tradução
-	private static void encontraOuCriaPalavra(String filteredWord, List<Word> words) {
+	private static void encontraOuCriaPalavra(String filteredWord, List<Word> words, String idiomaOriginal,
+			String idiomaTraduzir) {
 		if (!filteredWord.equals("") && !filteredWord.equals(" ")) {
 			Word palavra = new Word(filteredWord);
 
@@ -84,7 +64,7 @@ public class MainProgramService {
 				int index = words.indexOf(palavra);
 				words.get(index).adicionaFrequencia();
 			} else {
-				String translatedWord = Translator.translateText(filteredWord, "en", "pt");
+				String translatedWord = Translator.tradutorPalavra(filteredWord, idiomaOriginal, idiomaTraduzir);
 				palavra.setWordTranslated(translatedWord);
 				words.add(palavra);
 			}
@@ -105,6 +85,7 @@ public class MainProgramService {
 		return caminhoArquivoLegenda.getParent();
 	}
 
+// tentar implementar por ca
 	public static void organizaPalavrasPelaInterfaceComparable(List<Word> words) {
 		Collections.sort(words);
 

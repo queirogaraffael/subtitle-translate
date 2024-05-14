@@ -4,7 +4,7 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 
 public class GoogleTranslateConnection {
-	private static String apiKey = "";
+	private static String apiKey = "KeyApi";
 	private static Translate translate;
 
 	@SuppressWarnings("deprecation")
@@ -21,6 +21,10 @@ public class GoogleTranslateConnection {
 		if (translate == null) {
 			translate = TranslateOptions.newBuilder().setApiKey(apiKey).build().getService();
 		}
+	}
+
+	public static synchronized void clearTranslateService() {
+		translate = null;
 	}
 
 }
