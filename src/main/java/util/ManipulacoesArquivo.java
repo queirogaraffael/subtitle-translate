@@ -9,7 +9,7 @@ import java.util.List;
 import constantes.ConstantesGeral;
 import entities.Word;
 
-public class ManipulaArquivo {
+public class ManipulacoesArquivo {
 	public static boolean verificarDiretorio(String caminhoArquivoLegendaString) {
 
 		File caminhoArquivoLegenda = new File(caminhoArquivoLegendaString);

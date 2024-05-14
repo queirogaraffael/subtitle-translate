@@ -9,7 +9,7 @@ import GoogleTranslateAPI.GoogleTranslateConnection;
 import Services.SubtitleTranslateService;
 import constantes.ConstantesOpcoes;
 import entities.Word;
-import util.ManipulaArquivo;
+import util.ManipulacoesArquivo;
 import views.FalhaArquivoView;
 import views.IdiomasView;
 import views.SinalDeEsperaTraducaoView;
@@ -29,8 +29,8 @@ public class SubtitleTranslateController {
 
 		while (true) {
 
-			if (!ManipulaArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
-					|| !ManipulaArquivo.verificarDiretorio(caminhoArquivoLegendaString)) {
+			if (!ManipulacoesArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
+					|| !ManipulacoesArquivo.verificarDiretorio(caminhoArquivoLegendaString)) {
 				int opcao = FalhaArquivoView.view();
 
 				if (opcao == ConstantesOpcoes.SIM) {
@@ -60,7 +60,7 @@ public class SubtitleTranslateController {
 		String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
 				.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
 
-		ManipulaArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
+		ManipulacoesArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
 
 		TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
 

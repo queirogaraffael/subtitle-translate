@@ -33,4 +33,4 @@ Como usar
 Contribuições são bem-vindas! Se você deseja contribuir com melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
 ## Licença
-Este projeto é licenciado sob a Licença MIT.
+Este projeto é licenciado sob a [Licença MIT](https://github.com/queirogaraffael/subtitle-translate/blob/main/LICENSE).
