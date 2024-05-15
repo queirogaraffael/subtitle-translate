@@ -10,7 +10,8 @@ import constantes.ConstantesGeral;
 import entities.Word;
 
 public class ManipulacoesArquivo {
-	public static boolean verificarDiretorio(String caminhoArquivoLegendaString) {
+	
+	public static boolean retornaSeDiretorioEValido(String caminhoArquivoLegendaString) throws IOException {
 
 		File caminhoArquivoLegenda = new File(caminhoArquivoLegendaString);
 
@@ -47,7 +48,8 @@ public class ManipulacoesArquivo {
 		}
 	}
 
-	public static void salvaArquivoTraducaoFrequencia(String caminhoArquivo, String nomeArquivo, List<Word> palavras) {
+	public static void salvaArquivoTraducaoFrequencia(String caminhoArquivo, String nomeArquivo, List<Word> palavras)
+			throws IOException {
 
 		File diretorio = new File(caminhoArquivo);
 
@@ -62,8 +64,6 @@ public class ManipulacoesArquivo {
 				bw.write(line.toString());
 				bw.newLine();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

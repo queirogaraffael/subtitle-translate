@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import GoogleTranslateAPI.Translator;
 import entities.Word;
 
@@ -28,8 +26,8 @@ public class SubtitleTranslateService {
 
 	}
 
-	public static void processarConteudoDoArquivo(List<Word> words, String caminhoArquivoLegenda,
-			String idiomaTraduzir) {
+	public static void processarConteudoDoArquivo(List<Word> words, String caminhoArquivoLegenda, String idiomaTraduzir)
+			throws IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivoLegenda))) {
 
 			String linhaDoArquivo = br.readLine();
@@ -48,8 +46,6 @@ public class SubtitleTranslateService {
 
 				linhaDoArquivo = br.readLine();
 			}
-		} catch (IOException erro) {
-			JOptionPane.showMessageDialog(null, "Erro ao tentar ler arquivo." + erro);
 		}
 	}
 

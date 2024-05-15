@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,49 +24,59 @@ public class SubtitleTranslateController {
 
 	public void MainProgram() {
 
-		List<Word> words = new ArrayList<Word>();
+		try {
 
-		String caminhoArquivoLegendaString = JOptionPane.showInputDialog("Digite o caminho do arquivo da legenda: ");
+			List<Word> words = new ArrayList<Word>();
 
-		while (true) {
+			String caminhoArquivoLegendaString = JOptionPane
+					.showInputDialog("Digite o caminho do arquivo da legenda: ");
 
-			if (!ManipulacoesArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
-					|| !ManipulacoesArquivo.verificarDiretorio(caminhoArquivoLegendaString)) {
-				int opcao = FalhaArquivoView.view();
+			while (true) {
 
-				if (opcao == ConstantesOpcoes.SIM) {
-					caminhoArquivoLegendaString = JOptionPane
-							.showInputDialog("Digite o caminho do arquivo da legenda: ");
+				if (!ManipulacoesArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
+						|| !ManipulacoesArquivo.retornaSeDiretorioEValido(caminhoArquivoLegendaString)) {
+					int opcao = FalhaArquivoView.view();
+
+					if (opcao == ConstantesOpcoes.SIM) {
+						caminhoArquivoLegendaString = JOptionPane
+								.showInputDialog("Digite o caminho do arquivo da legenda: ");
+
+					} else {
+						GoogleTranslateConnection.clearTranslateService();
+						System.exit(0);
+					}
 
 				} else {
-					GoogleTranslateConnection.clearTranslateService();
-					System.exit(0);
+					break;
 				}
 
-			} else {
-				break;
 			}
 
+			String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
+
+			SinalDeEsperaTraducaoView.view();
+
+			SubtitleTranslateService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString, idiomaTraduzir);
+
+			SubtitleTranslateService.organizaPalavrasPelaInterfaceComparable(words);
+
+			String nomeArquivoFormatado = SubtitleTranslateService
+					.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
+			String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
+					.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
+
+			ManipulacoesArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado,
+					words);
+
+			TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
+
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Problema no arquivo.");
+		} finally {
+
+			GoogleTranslateConnection.clearTranslateService();
+			System.exit(0);
 		}
-
-		String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
-
-		SinalDeEsperaTraducaoView.view();
-
-		SubtitleTranslateService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString, idiomaTraduzir);
-
-		SubtitleTranslateService.organizaPalavrasPelaInterfaceComparable(words);
-
-		String nomeArquivoFormatado = SubtitleTranslateService.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
-		String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
-				.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
-
-		ManipulacoesArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
-
-		TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
-
-		GoogleTranslateConnection.clearTranslateService();
-		System.exit(0);
 
 	}
 
