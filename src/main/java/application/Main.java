@@ -1,13 +1,10 @@
 package application;
 
-import GoogleTranslateAPI.GoogleTranslateConnection;
 import controller.SubtitleTranslateController;
 
 public class Main {
 
-	public static void main(String[] args) {
-		
-		GoogleTranslateConnection.inicializaGoogleTranslateConnection();
+	public static void main(String[] args) throws Exception {
 
 		SubtitleTranslateController controller = new SubtitleTranslateController();
 

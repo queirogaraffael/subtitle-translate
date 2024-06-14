@@ -1,4 +1,4 @@
-package constantes;
+package commons.constantes;
 
 public class ConstantesOpcoes {
 	public static final int SIM = 0;

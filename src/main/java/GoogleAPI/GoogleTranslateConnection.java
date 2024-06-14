@@ -1,4 +1,4 @@
-package GoogleTranslateAPI;
+package GoogleAPI;
 
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;

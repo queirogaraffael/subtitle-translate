@@ -2,27 +2,30 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import GoogleTranslateAPI.GoogleTranslateConnection;
-import Services.SubtitleTranslateService;
-import constantes.ConstantesOpcoes;
-import entities.Word;
-import util.ManipulacoesArquivo;
+import GoogleAPI.GoogleTranslateConnection;
+import commons.constantes.ConstantesOpcoes;
+import commons.util.FileManager;
+import model.entities.Word;
+import model.service.TranslatorFactory;
+import model.service.TranslatorInterface;
 import views.FalhaArquivoView;
 import views.IdiomasView;
-import views.SinalDeEsperaTraducaoView;
 import views.TraducaoFinalizadaView;
 
 public class SubtitleTranslateController {
 
-	public SubtitleTranslateController() {
+	private TranslatorInterface translator;
 
+	public SubtitleTranslateController() throws Exception {
+		this.translator = TranslatorFactory.createTranslator();
 	}
 
-	public void MainProgram() {
+	public void MainProgram() throws Exception {
 
 		try {
 
@@ -33,8 +36,8 @@ public class SubtitleTranslateController {
 
 			while (true) {
 
-				if (!ManipulacoesArquivo.verificaSeArquivoExiste(caminhoArquivoLegendaString)
-						|| !ManipulacoesArquivo.retornaSeDiretorioEValido(caminhoArquivoLegendaString)) {
+				if (!FileManager.verificaSeArquivoExiste(caminhoArquivoLegendaString)
+						|| !FileManager.retornaSeDiretorioEValido(caminhoArquivoLegendaString)) {
 					int opcao = FalhaArquivoView.view();
 
 					if (opcao == ConstantesOpcoes.SIM) {
@@ -54,26 +57,28 @@ public class SubtitleTranslateController {
 
 			String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
 
-			SinalDeEsperaTraducaoView.view();
+			JOptionPane.showMessageDialog(null,
+					"Aguarde o processamento ser finalizado. O tempo depende do tamanho do arquivo!");
 
-			SubtitleTranslateService.processarConteudoDoArquivo(words, caminhoArquivoLegendaString, idiomaTraduzir);
+			
+			FileManager.processarPalavrasDoArquivoDeLegenda(words, caminhoArquivoLegendaString);
+			translator.traduzListaPalavras(words, idiomaTraduzir);
+			Collections.sort(words);
 
-			SubtitleTranslateService.organizaPalavrasPelaInterfaceComparable(words);
-
-			String nomeArquivoFormatado = SubtitleTranslateService
-					.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
-			String caminhoParaSalvarArquivoTraduzido = SubtitleTranslateService
+			
+			
+			String nomeArquivoFormatado = FileManager.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
+			String caminhoParaSalvarArquivoTraduzido = FileManager
 					.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
-
-			ManipulacoesArquivo.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado,
-					words);
+			
+			
+			FileManager.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
 
 			TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
 
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Problema no arquivo.");
+		} catch (IOException erro) {
+			JOptionPane.showMessageDialog(null, "Erro: " + erro);
 		} finally {
-
 			GoogleTranslateConnection.clearTranslateService();
 			System.exit(0);
 		}

@@ -1,4 +1,4 @@
-package constantes;
+package commons.constantes;
 
 public class ConstantesIdiomas {
 	public static String INGLES = "en";

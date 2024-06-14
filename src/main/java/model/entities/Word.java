@@ -1,4 +1,4 @@
-package entities;
+package model.entities;
 
 import java.util.Objects;
 
@@ -11,7 +11,6 @@ public class Word implements Comparable<Word> {
 	}
 
 	public Word(String word) {
-		super();
 		this.word = word;
 	}
 
@@ -67,6 +66,6 @@ public class Word implements Comparable<Word> {
 
 	@Override
 	public String toString() {
-		return String.format("%d : ", frequency) +  word + " - " + wordTranslated;
+		return String.format("%d : ", frequency) + word + " - " + wordTranslated;
 	}
 }

@@ -2,7 +2,7 @@ package views;
 
 import javax.swing.JOptionPane;
 
-import constantes.ConstantesIdiomas;
+import commons.constantes.ConstantesIdiomas;
 
 public class IdiomasView {
 	private static Object[] idiomas = { "Ingles", "Portugues", "Alemao" };
